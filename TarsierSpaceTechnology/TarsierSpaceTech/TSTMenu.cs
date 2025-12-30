@@ -50,12 +50,9 @@ namespace TarsierSpaceTech
         private Vector2 SDDscrollViewVector = Vector2.zero;
         private bool mouseDown;
         private bool stylesSet;
-        private bool LoadConfig = true;
-        private string tmpToolTip;
         
         //GuiVisibility
         
-        private bool _FTVisible;
         private enum TSTWindow
         {
             FLIGHT,
@@ -69,7 +66,6 @@ namespace TarsierSpaceTech
         private List<TSTSpaceTelescope> tstSpaceTel = new List<TSTSpaceTelescope>();
         private List<TSTScienceHardDrive> tstSDD = new List<TSTScienceHardDrive>();
         //private List<TSTGyroReactionWheel> tstGyroReactionWheel = new List<TSTGyroReactionWheel>();        
-        private int FTTelIndex;
         
         private bool RT2Present;
         private bool RT2Enabled;
@@ -177,7 +173,7 @@ namespace TarsierSpaceTech
         public TSTMenu()
         {
             Instance = this;
-        }     
+        }
 
         public void Awake()
         {
@@ -191,21 +187,26 @@ namespace TarsierSpaceTech
             TSTwindowID = Utilities.getnextrandomInt();
             FTTwindowID = Utilities.getnextrandomInt();
             RT2Present = Utilities.IsRTInstalled;
-            
-            TSTMenuAppLToolBar = new AppLauncherToolBar(Localizer.Format("#autoLOC_TST_0234"), Localizer.Format("#autoLOC_TST_0235"), //#autoLOC_TST_0234 = TST #autoLOC_TST_0235 = Tarsier Space Tech
+
+            try
+            {
+                TSTMenuAppLToolBar = new AppLauncherToolBar(Localizer.Format("#autoLOC_TST_0234"), Localizer.Format("#autoLOC_TST_0235"), //#autoLOC_TST_0234 = TST #autoLOC_TST_0235 = Tarsier Space Tech
                 "TarsierSpaceTech/Icons/ToolbarIcon",
                 (ApplicationLauncher.AppScenes.FLIGHT),
                 GameDatabase.Instance.GetTexture("TarsierSpaceTech/Icons/TSTIconOn", false), GameDatabase.Instance.GetTexture("TarsierSpaceTech/Icons/TSTIconOff", false),
                 GameScenes.FLIGHT);
 
-            GameEvents.onGameSceneSwitchRequested.Add(onGameSceneSwitchRequested);
-            GameEvents.onVesselSwitching.Add(onVesselSwitching);
+                GameEvents.onGameSceneSwitchRequested.Add(onGameSceneSwitchRequested);
+                GameEvents.onVesselSwitching.Add(onVesselSwitching);
 
-            Utilities.Log("Awake complete");
+                Utilities.Log("Awake complete");
+            }
+            catch (System.Exception ex)
+            {
+                Utilities.Log("TSTMenu AppLauncherToolBar creation failed: " + ex.Message);
+            }
         }
-        
-        
-        
+
         public void Start()
         {
             Utilities.Log_Debug("TSTMenu Start in " + HighLogic.LoadedScene);

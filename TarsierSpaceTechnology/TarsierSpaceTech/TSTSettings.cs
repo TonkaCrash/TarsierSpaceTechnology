@@ -116,7 +116,7 @@ namespace TarsierSpaceTech
             TSTnhplanets.Save(globalNode);
             globalNode.Save(globalConfigFilename);
             Utilities.Log_Debug("TSTMstStgs OnSave: \n {0}" , globalNode.ToString());
-            GameEvents.OnGameSettingsApplied.Add(ApplySettings);
+            GameEvents.OnGameSettingsApplied.Remove(ApplySettings);
         }
 
         private void ApplySettings()

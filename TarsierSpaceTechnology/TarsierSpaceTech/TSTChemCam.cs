@@ -143,13 +143,15 @@ namespace TarsierSpaceTech
 		        //_lazerObj.castShadows = false;
 		        _lazerObj.shadowCastingMode = ShadowCastingMode.Off;
 		        _lazerObj.receiveShadows = false;
-		        _lazerObj.SetWidth(0.01f, 0.01f);
+				_lazerObj.startWidth = 0.01f;
+				_lazerObj.endWidth = 0.01f;
 		        _lazerObj.SetPosition(0, new Vector3(0, 0, 0));
 		        _lazerObj.SetPosition(1, new Vector3(0, 0, 5));
 		        _lazerObj.useWorldSpace = false;
 		        _lazerObj.material = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
 		        _lazerObj.material.color = Color.red;
-		        _lazerObj.SetColors(Color.red, Color.red);
+		        _lazerObj.startColor = Color.red;
+				_lazerObj.endColor = Color.red;
 		    }
 
 		    Utilities.Log_Debug("Finding Camera Transforms");
