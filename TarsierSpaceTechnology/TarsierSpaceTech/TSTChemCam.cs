@@ -192,7 +192,7 @@ namespace TarsierSpaceTech
 				updateAvailableEvents();
 				if (_camera.Enabled && f++ % frameLimit == 0)
 				{
-					_camera.draw();
+					_camera.Draw();
 				}
 			}
 		}
@@ -226,7 +226,7 @@ namespace TarsierSpaceTech
 			{
 				windowState = windowState == WindowSate.Small ? WindowSate.Large : WindowSate.Small;
 				int w = (windowState == WindowSate.Small ? GUI_WIDTH_SMALL : GUI_WIDTH_LARGE);
-				_camera.changeSize(w, w);
+				_camera.ChangeSize(w, w);
 				_windowRect.height = 0;
 			}
 			GUILayout.EndHorizontal();
@@ -338,7 +338,7 @@ namespace TarsierSpaceTech
 			_camera.Enabled = true;
 			Active = true;
 			_camera.fov = 80;
-			_camera.changeSize(GUI_WIDTH_SMALL, GUI_WIDTH_SMALL);
+			_camera.ChangeSize(GUI_WIDTH_SMALL, GUI_WIDTH_SMALL);
 			
 		}
 
@@ -465,7 +465,7 @@ namespace TarsierSpaceTech
 				while ((File.Exists<TSTChemCam>("ChemCam_" + DateTime.Now.ToString("d-m-y") + "_" + i + ".png")) ||
 					(File.Exists<TSTChemCam>("ChemCam_" + DateTime.Now.ToString("d-m-y") + "_" + i + "Large.png")))
 					i++;
-				_camera.saveToFile("ChemCam_" + DateTime.Now.ToString("d-m-y") + "_" + i, "ChemCam");
+				_camera.SaveToFile("ChemCam_" + DateTime.Now.ToString("d-m-y") + "_" + i, "ChemCam");
 				ScreenMessages.PostScreenMessage(cacheautoLOC_TST_0049, 3f, ScreenMessageStyle.UPPER_CENTER);
 			}			
 		}

@@ -588,7 +588,7 @@ namespace TarsierSpaceTech
                 _camera.Enabled = true;
                 Active = true;
                 windowState = WindowState.Small;
-                _camera.changeSize(GUI_WIDTH_SMALL, GUI_WIDTH_SMALL);
+                _camera.ChangeSize(GUI_WIDTH_SMALL, GUI_WIDTH_SMALL);
                 cameraTransform.localRotation = zeroRotation;
             }
         }
@@ -768,7 +768,7 @@ namespace TarsierSpaceTech
                     KSP.IO.File.Exists<TSTSpaceTelescope>(
                         "Telescope_" + DateTime.Now.ToString("d-m-y") + "_" + i + "Large.png", null))
                     i++;
-                _camera.saveToFile("Telescope_" + DateTime.Now.ToString("d-m-y") + "_" + i, "TeleScope");
+                _camera.SaveToFile("Telescope_" + DateTime.Now.ToString("d-m-y") + "_" + i, "TeleScope");
                 ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_TST_0049"), 5f, ScreenMessageStyle.UPPER_CENTER); //#autoLOC_TST_0049 = Picture saved
             }
         }
@@ -941,7 +941,7 @@ namespace TarsierSpaceTech
             {
                 windowState = windowState == WindowState.Small ? WindowState.Large : WindowState.Small;
                 int w = windowState == WindowState.Small ? GUI_WIDTH_SMALL : GUI_WIDTH_LARGE;
-                _camera.changeSize(w, w);
+                _camera.ChangeSize(w, w);
                 windowPos.height = 0;
             }
             if (

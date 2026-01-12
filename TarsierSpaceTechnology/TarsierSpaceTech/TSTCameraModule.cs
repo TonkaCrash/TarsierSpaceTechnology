@@ -82,7 +82,7 @@ namespace TarsierSpaceTech
         public float ZoomLevel
         {
             get { return _zoomLevel; }
-            set { _zoomLevel = value; updateZoom(); }
+            set { _zoomLevel = value; UpdateZoom(); }
         }
         
         public float fov
@@ -146,21 +146,21 @@ namespace TarsierSpaceTech
             if (!singleCamera)
             {
                 _farCam = new CameraHelper(gameObject, Utilities.findCameraByName("Camera 01"), _renderTexture, 19, true);
-                _farCam.reset();
+                _farCam.Reset();
                 _farCamFS = new CameraHelper(gameObject, Utilities.findCameraByName("Camera 01"), _renderTextureFS, 23, true);
-                _farCamFS.reset();
+                _farCamFS.Reset();
             }
             _nearCam = new CameraHelper(gameObject, Utilities.findCameraByName("Camera 00"), _renderTexture, 20, true);
             _galaxyCamFS = new CameraHelper(gameObject, Utilities.findCameraByName("GalaxyCamera"), _renderTextureFS, 21, false);
             _scaledSpaceCamFS = new CameraHelper(gameObject, Utilities.findCameraByName("Camera ScaledSpace"), _renderTextureFS, 22, false);
             _nearCamFS = new CameraHelper(gameObject, Utilities.findCameraByName("Camera 00"), _renderTextureFS, 24, true);
-            setupRenderTexture();
-            _galaxyCam.reset();
-            _scaledSpaceCam.reset();
-            _nearCam.reset();
-            _galaxyCamFS.reset();
-            _scaledSpaceCamFS.reset();
-            _nearCamFS.reset();
+            SetupRenderTexture();
+            _galaxyCam.Reset();
+            _scaledSpaceCam.Reset();
+            _nearCam.Reset();
+            _galaxyCamFS.Reset();
+            _scaledSpaceCamFS.Reset();
+            _nearCamFS.Reset();
             if (TSTMstStgs.Instance != null)
             {
                 zoomSkyBox = TSTMstStgs.Instance.TSTsettings.ZoomSkyBox;
@@ -181,22 +181,22 @@ namespace TarsierSpaceTech
         {
             if (_enabled) 
             {
-                _galaxyCam.reset();
-                _scaledSpaceCam.reset();
+                _galaxyCam.Reset();
+                _scaledSpaceCam.Reset();
                 if (!singleCamera)
                 {
-                    _farCam.reset();
-                    _farCamFS.reset();
+                    _farCam.Reset();
+                    _farCamFS.Reset();
                 }
-                _nearCam.reset();
-                _galaxyCamFS.reset();
-                _scaledSpaceCamFS.reset();                               
-                _nearCamFS.reset();
-                draw();
+                _nearCam.Reset();
+                _galaxyCamFS.Reset();
+                _scaledSpaceCamFS.Reset();                               
+                _nearCamFS.Reset();
+                Draw();
             }
         }
 
-        private void updateZoom()
+        private void UpdateZoom()
         {
             
             if (zoomSkyBox)
@@ -221,14 +221,14 @@ namespace TarsierSpaceTech
             _nearCamFS.fov = tmpfov;    
         }
 
-        internal void changeSize(int width, int height)
+        internal void ChangeSize(int width, int height)
         {
             textureWidth = width;
             textureHeight = height;
-            setupRenderTexture();
+            SetupRenderTexture();
         }
 
-        private void setupRenderTexture()
+        private void SetupRenderTexture()
         {
             Utilities.Log_Debug("{0}:Setting Up Render Texture", GetType().Name);
             if (_renderTexture)
@@ -275,7 +275,7 @@ namespace TarsierSpaceTech
             Utilities.Log_Debug("{0}:Finish Setting Up Render Texture", GetType().Name);
         }
 
-        internal Texture2D draw()
+        internal Texture2D Draw()
         {
            activeRT = RenderTexture.active;
             RenderTexture.active = _renderTexture;
@@ -370,17 +370,17 @@ namespace TarsierSpaceTech
             return _texture2D;
         }
                 
-        internal Texture2D drawFS() // Same as Draw() but for fullscreencameras
+        internal Texture2D DrawFS() // Same as Draw() but for fullscreencameras
         {
             activeRT = RenderTexture.active;
             RenderTexture.active = _renderTextureFS;
-            _galaxyCamFS.reset();
-            _scaledSpaceCamFS.reset();
+            _galaxyCamFS.Reset();
+            _scaledSpaceCamFS.Reset();
             if (!singleCamera)
             {
-                _farCamFS.reset();
+                _farCamFS.Reset();
             }
-            _nearCamFS.reset();
+            _nearCamFS.Reset();
 
 
             //Render the Skybox
@@ -455,12 +455,12 @@ namespace TarsierSpaceTech
             return _texture2DFullSze;
         }
              
-        public void saveToFile(string fileName, string devtype) // Save Image to filesystem
+        public void SaveToFile(string fileName, string devtype) // Save Image to filesystem
         {
             string lgefileName = fileName + "Large.png";
             fileName += ".png";
             byte[] data = _texture2D.EncodeToPNG();
-            drawFS();
+            DrawFS();
             byte[] dataFS = _texture2DFullSze.EncodeToPNG();
 
             if (devtype == "ChemCam")
@@ -556,24 +556,31 @@ namespace TarsierSpaceTech
             set { _go.transform.position = position;  }
         }
 
-        public void reset()
+        public void Reset()
         {
-            _camera.CopyFrom(_copyFrom);
-            if (_attachToParent)
+            try
             {
-                _go.transform.parent = _parent.transform;
-                _go.transform.localPosition = Vector3.zero;
-                _go.transform.localEulerAngles = Vector3.zero;                    
+                _camera.CopyFrom(_copyFrom);
+                if (_attachToParent)
+                {
+                    _go.transform.parent = _parent.transform;
+                    _go.transform.localPosition = Vector3.zero;
+                    _go.transform.localEulerAngles = Vector3.zero;
+                }
+                else
+                {
+                    _go.transform.rotation = _parent.transform.rotation;
+                }
+                _camera.rect = new Rect(0, 0, 1, 1);
+                _camera.depth = _depth;
+                _camera.fieldOfView = _fov;
+                _camera.targetTexture = _renderTarget;
+                _camera.enabled = enabled;
             }
-            else
+            catch (System.Exception ex)
             {
-                _go.transform.rotation = _parent.transform.rotation;                    
+                Utilities.Log("{0}:CameraHelper reset exception: {1}", GetType().Name, ex.Message);
             }
-            _camera.rect = new Rect(0, 0, 1, 1);
-            _camera.depth = _depth;
-            _camera.fieldOfView = _fov;
-            _camera.targetTexture = _renderTarget;
-            _camera.enabled = enabled;
         }
     }
 }
